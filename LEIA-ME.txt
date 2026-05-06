@@ -1,0 +1,60 @@
+ABBA ATELIÊ - SITE ESTÁTICO COMPLETO
+
+Arquivos principais:
+- index.html
+- galeria.html
+- style.css
+- script.js
+
+PASTAS DE IMAGENS
+
+1) Destaques da página inicial:
+img/destaques/
+
+Use estes nomes:
+destaque1.jpg
+destaque2.jpg
+...
+destaque10.jpg
+
+2) Mostruário completo:
+img/mostruario/
+
+Use estes nomes:
+foto1.jpg
+foto2.jpg
+...
+foto100.jpg
+
+A galeria está preparada para até 100 imagens.
+Se uma imagem não existir, ela não aparece no site.
+
+3) Antes e depois:
+img/antes-depois/
+
+Use:
+antes1.jpg
+depois1.jpg
+
+COMO TROCAR O WHATSAPP
+
+Abra o arquivo script.js e altere:
+const WHATSAPP_NUMBER = "5500000000000";
+
+Troque pelo número real com DDI e DDD.
+Exemplo:
+const WHATSAPP_NUMBER = "5511999999999";
+
+Também substitua os links fixos wa.me no index.html e galeria.html se desejar.
+
+COMO TROCAR INSTAGRAM
+
+Procure no index.html e galeria.html:
+https://www.instagram.com/
+
+Troque pelo link real do Instagram do ateliê.
+
+OBSERVAÇÃO
+
+Os botões "Ver detalhes" já funcionam.
+Ao clicar, abre uma janela em tela cheia com foto, código do modelo e botão para WhatsApp.
