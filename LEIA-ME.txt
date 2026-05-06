@@ -58,3 +58,17 @@ OBSERVAÇÃO
 
 Os botões "Ver detalhes" já funcionam.
 Ao clicar, abre uma janela em tela cheia com foto, código do modelo e botão para WhatsApp.
+
+
+SISTEMA DE FAVORITOS
+
+Na página galeria.html, cada modelo possui um botão de coração.
+O cliente pode selecionar vários modelos e enviar todos em uma única mensagem pelo WhatsApp.
+
+O sistema é 100% estático e usa localStorage do navegador.
+Não precisa banco de dados.
+Não precisa login.
+Não precisa backend.
+
+IMPORTANTE:
+Os favoritos ficam salvos apenas no navegador do cliente.

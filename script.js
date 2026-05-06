@@ -128,3 +128,113 @@ document.addEventListener("keydown", (event) => {
     closeModelModal();
   }
 });
+
+
+/* Sistema de favoritos do mostruário */
+const favoritesPanel = document.getElementById("favoritesPanel");
+const favoritesToggle = document.getElementById("favoritesToggle");
+const favoritesCount = document.getElementById("favoritesCount");
+const favoritesList = document.getElementById("favoritesList");
+const favoritesWhatsapp = document.getElementById("favoritesWhatsapp");
+const clearFavorites = document.getElementById("clearFavorites");
+const favoriteButtons = document.querySelectorAll(".favorite-btn");
+
+const FAVORITES_KEY = "abba_atelie_favoritos";
+
+function getFavorites() {
+  try {
+    return JSON.parse(localStorage.getItem(FAVORITES_KEY)) || [];
+  } catch {
+    return [];
+  }
+}
+
+function saveFavorites(favorites) {
+  localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
+}
+
+function isFavorite(model) {
+  return getFavorites().some((item) => item.model === model);
+}
+
+function toggleFavorite(item) {
+  let favorites = getFavorites();
+
+  if (favorites.some((fav) => fav.model === item.model)) {
+    favorites = favorites.filter((fav) => fav.model !== item.model);
+  } else {
+    favorites.push(item);
+  }
+
+  saveFavorites(favorites);
+  renderFavorites();
+}
+
+function renderFavorites() {
+  if (!favoritesCount || !favoritesList || !favoritesWhatsapp) return;
+
+  const favorites = getFavorites();
+
+  favoritesCount.textContent = favorites.length;
+  favoritesList.innerHTML = "";
+
+  favoriteButtons.forEach((button) => {
+    button.classList.toggle("active", isFavorite(button.dataset.model));
+  });
+
+  if (favorites.length === 0) {
+    const empty = document.createElement("li");
+    empty.textContent = "Nenhum modelo escolhido.";
+    favoritesList.appendChild(empty);
+    favoritesWhatsapp.classList.add("disabled");
+    favoritesWhatsapp.href = "#";
+    return;
+  }
+
+  favorites.forEach((item) => {
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <span>${item.model}</span>
+      <button class="remove-favorite" type="button" aria-label="Remover ${item.model}">×</button>
+    `;
+
+    li.querySelector(".remove-favorite").addEventListener("click", () => {
+      const updated = getFavorites().filter((fav) => fav.model !== item.model);
+      saveFavorites(updated);
+      renderFavorites();
+    });
+
+    favoritesList.appendChild(li);
+  });
+
+  const modelos = favorites.map((item) => `${item.model} - ${item.category}`).join(", ");
+  const message = `Olá, Abba Ateliê! Gostei dos seguintes modelos do mostruário: ${modelos}. Gostaria de solicitar um orçamento.`;
+
+  favoritesWhatsapp.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+  favoritesWhatsapp.classList.remove("disabled");
+}
+
+if (favoritesToggle && favoritesPanel) {
+  favoritesToggle.addEventListener("click", () => {
+    favoritesPanel.classList.toggle("active");
+  });
+}
+
+favoriteButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    toggleFavorite({
+      model: button.dataset.model,
+      category: button.dataset.category,
+      image: button.dataset.image
+    });
+  });
+});
+
+if (clearFavorites) {
+  clearFavorites.addEventListener("click", () => {
+    localStorage.removeItem(FAVORITES_KEY);
+    renderFavorites();
+  });
+}
+
+renderFavorites();
